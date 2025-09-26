@@ -20,7 +20,7 @@ This tool cuts the time it takes to create a repo by multiples.
 *** https://github.com/charmbracelet/huh
 
 ** Prerequisites
-gh cil
+gh cil (and logged in via gh auth login)
 nix
 direnv
 devenv

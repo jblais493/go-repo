@@ -1,8 +1,9 @@
 package main
 
 import (
+	"fmt"
 	cmd "github.com/jblais493/go-repo/internal/commands"
-	"log"
+	"os"
 )
 
 type Init struct {
@@ -19,6 +20,7 @@ type RepoConfig struct {
 
 func main() {
 	if err := cmd.CreateRepoInteractive(); err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
 	}
 }
