@@ -4,11 +4,11 @@ This tool cuts the time it takes to create a repo by multiples.
 
 ** DONE Create directory (reponame)
 ** DONE git init
+** DONE gh create repo with choice of public/private and reponame
+** DONE git remote add origin https://github.com/username/reponame
 ** TODO devenv init
 *** TODO devenv activate
 ** TODO nix flake init
-** TODO gh create repo with choice of public/private and reponame
-** TODO git remote add origin https://github.com/username/reponame
 ** TODO go mod init reponame
 ** TODO air init
 ** TODO touch main.go with Hello World
