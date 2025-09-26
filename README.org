@@ -9,11 +9,12 @@ This tool cuts the time it takes to create a repo by multiples.
 ** TODO devenv init
 *** TODO devenv activate
 ** TODO nix flake init
-** TODO go mod init reponame
-** TODO air init
-** TODO touch main.go with Hello World
 ** TODO create README.org
-** TODO nix run github:jblais493/go-secrets -- generate
+** GO related:
+*** TODO go mod init reponame
+*** TODO air init
+*** TODO touch main.go with Hello World
+*** TODO nix run github:jblais493/go-secrets -- generate
 
 ** Using
 *** https://github.com/charmbracelet/bubbletea?tab=readme-ov-file
