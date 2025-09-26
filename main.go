@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
-	"fmt"
+	cmd "github.com/jblais493/go-repo/internal/commands"
+	"log"
 )
 
 type Init struct {
@@ -18,5 +18,7 @@ type RepoConfig struct {
 }
 
 func main() {
-	fmt.Printf("hello")
+	if err := cmd.CreateRepoInteractive(); err != nil {
+		log.Fatal(err)
+	}
 }

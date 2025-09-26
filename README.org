@@ -2,17 +2,25 @@
 
 This tool cuts the time it takes to create a repo by multiples.
 
-- Create directory (reponame)
-- git init
-- gh create repo with choice of public/private and reponame
-- git remote add origin https://github.com/username/reponame
-- devenv init
-- nix flake init
-- go mod init reponame
-- touch main.go with Hello World
-- create README.org
-- nix run github:jblais493/go-secrets -- generate
+** DONE Create directory (reponame)
+** DONE git init
+** TODO devenv init
+*** TODO devenv activate
+** TODO nix flake init
+** TODO gh create repo with choice of public/private and reponame
+** TODO git remote add origin https://github.com/username/reponame
+** TODO go mod init reponame
+** TODO air init
+** TODO touch main.go with Hello World
+** TODO create README.org
+** TODO nix run github:jblais493/go-secrets -- generate
 
 ** Using
 *** https://github.com/charmbracelet/bubbletea?tab=readme-ov-file
 *** https://github.com/charmbracelet/huh
+
+** Prerequisites
+gh cil
+nix
+direnv
+devenv
