@@ -2,26 +2,6 @@
 
 This tool cuts the time it takes to create a repo by multiples.
 
-** DONE Create directory (reponame)
-** DONE git init
-** DONE gh create repo with choice of public/private and reponame
-** DONE git remote add origin https://github.com/username/reponame
-** DONE devenv init
-*** DONE devenv activate
-** DONE Secrets generation
-** DONE nix flake init
-** DONE create README.org
-** GO related:
-*** DONE go mod init reponame
-*** DONE air init
-*** DONE touch main.go with Hello World
-*** DONE nix run github:jblais493/go-secrets -- generate
-** TODO .gitignore
-*** TODO addin specific go template
-** TODO Justfile
-** TODO Addin support for gitea, codeberg
-** TODO Testing (go fmt, go vet)
-
 ** Using
 *** https://github.com/charmbracelet/bubbletea?tab=readme-ov-file
 *** https://github.com/charmbracelet/huh
@@ -54,3 +34,10 @@ devenv
 
 7 directories, 10 files
 #+end_src
+
+** TODOS
+*** TODO .gitignore
+**** TODO addin specific go template
+*** TODO Justfile
+*** TODO Addin support for gitea, codeberg
+*** TODO Testing (go fmt, go vet)
