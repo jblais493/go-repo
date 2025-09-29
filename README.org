@@ -13,7 +13,9 @@ This tool cuts the time it takes to create a repo by multiples.
 
 ** Project Tree
 #+begin_src bash
+❯ tree
 .
+├── flake.lock
 ├── flake.nix
 ├── go.mod
 ├── go.sum
@@ -29,9 +31,10 @@ This tool cuts the time it takes to create a repo by multiples.
 │   └── secrets
 │       └── secrets.go
 ├── main.go
-└── README.org
+├── README.org
+└── result -> /nix/store/w8f5n34swq7kbl5i48swv098fh1jarsw-scaffold-1.0.0
 
-7 directories, 10 files
+8 directories, 11 files
 #+end_src
 
 ** TODOS
