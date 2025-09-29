@@ -3,14 +3,13 @@
 This tool cuts the time it takes to create a repo by multiples.
 
 ** Using
-*** https://github.com/charmbracelet/bubbletea?tab=readme-ov-file
-*** https://github.com/charmbracelet/huh
+*** [[https://github.com/charmbracelet/huh][Charmbracelet/huh]]
 
 ** Prerequisites
-gh cil (and logged in via gh auth login)
-nix
-direnv
-devenv
+- [[https://cli.github.com/][gh cli]] (and logged in via gh auth login)
+- [[https://nixos.org/][nix]]
+- [[https://direnv.net/][direnv]]
+- [[https://devenv.sh/][devenv]]
 
 ** Project Tree
 #+begin_src bash
