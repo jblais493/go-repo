@@ -3,14 +3,14 @@
 This tool cuts the time it takes to create a repo by multiples.
 
 ** DONE Create directory (reponame)
-** DONE git init
+** DONE +git init+
 ** DONE gh create repo with choice of public/private and reponame
 ** DONE git remote add origin https://github.com/username/reponame
 ** DONE devenv init
 *** DONE devenv activate
 ** DONE Secrets generation
 ** DONE nix flake init
-** TODO create README.org
+** DONE create README.org
 ** GO related:
 *** DONE go mod init reponame
 *** DONE air init
