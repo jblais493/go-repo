@@ -1,3 +1,5 @@
+// internal/commands/commands.go
+
 package commands
 
 import (

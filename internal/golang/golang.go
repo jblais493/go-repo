@@ -1,4 +1,4 @@
-// go-repo/internal/golang/golang.go
+// internal/golang/golang.go
 
 package golang
 

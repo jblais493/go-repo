@@ -1,4 +1,4 @@
-// go-repo/internal/devenv.go
+// internal/devenv/devenv.go
 
 package devenv
 
@@ -41,6 +41,7 @@ in
     pkgs.air
     pkgs.age
     pkgs.just
+		pkgs.golangci-lint
   ];
 
   # Add runtime scripts here:

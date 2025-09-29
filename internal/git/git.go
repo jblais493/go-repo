@@ -1,9 +1,12 @@
+// internal/git/git.go
+
 package git
 
 import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 const readmeContent = `

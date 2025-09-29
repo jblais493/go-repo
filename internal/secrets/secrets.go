@@ -1,3 +1,5 @@
+// internal/secrets/secrets.go
+
 package secrets
 
 import (
