@@ -12,10 +12,10 @@ This tool cuts the time it takes to create a repo by multiples.
 ** DONE nix flake init
 ** TODO create README.org
 ** GO related:
-*** TODO go mod init reponame
-*** TODO air init
-*** TODO touch main.go with Hello World
-*** TODO nix run github:jblais493/go-secrets -- generate
+*** DONE go mod init reponame
+*** DONE air init
+*** DONE touch main.go with Hello World
+*** DONE nix run github:jblais493/go-secrets -- generate
 ** TODO .gitignore
 *** TODO addin specific go template
 ** TODO Justfile

@@ -6,6 +6,10 @@ import (
 	"os/exec"
 )
 
+const readmeContent = `
+	A fully boilerplated go project, ready for you to develop!
+`
+
 func CreateRepo(repoName string) error {
 	// Create directory with proper permissions
 	err := os.MkdirAll(repoName, 0755)

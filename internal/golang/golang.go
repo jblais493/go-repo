@@ -64,6 +64,34 @@ tmp_dir = "tmp"
   keep_scroll = true
 `
 
+const readmeTemplate = `#+title: %s
+
+A fully boilerplated Go project, ready for development!
+
+** Getting Started
+
+#+begin_src shell
+cd %s
+direnv allow
+devenv shell
+#+end_src
+
+** Development
+
+The project uses Air for hot-reloading:
+
+#+begin_src shell
+air
+#+end_src
+
+** Structure
+
+- =main.go= - Application entry point
+- =devenv.nix= - Development environment configuration
+- =.air.toml= - Hot-reload configuration
+- =secrets/= - Age-encrypted secrets (gitignored)
+`
+
 // InitGoProject orchestrates all Go-specific initialization
 func InitGoProject(projectPath, modulePath string) error {
 	if err := initModule(projectPath, modulePath); err != nil {
@@ -76,6 +104,10 @@ func InitGoProject(projectPath, modulePath string) error {
 
 	if err := initAir(projectPath); err != nil {
 		return fmt.Errorf("failed to initialize Air: %w", err)
+	}
+
+	if err := createReadme(projectPath, filepath.Base(projectPath)); err != nil {
+		return fmt.Errorf("failed to create README.org: %w", err)
 	}
 
 	return nil
@@ -115,5 +147,17 @@ func initAir(projectPath string) error {
 	}
 
 	fmt.Printf("Air hot-reload configured (.air.toml created)\n")
+	return nil
+}
+
+func createReadme(projectPath, repoName string) error {
+	readmeContent := fmt.Sprintf(readmeTemplate, repoName, repoName)
+	readmePath := filepath.Join(projectPath, "README.org")
+
+	if err := os.WriteFile(readmePath, []byte(readmeContent), 0644); err != nil {
+		return err
+	}
+
+	fmt.Printf("Created README.org\n")
 	return nil
 }
