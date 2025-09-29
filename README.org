@@ -9,7 +9,7 @@ This tool cuts the time it takes to create a repo by multiples.
 ** DONE devenv init
 *** DONE devenv activate
 ** DONE Secrets generation
-** TODO nix flake init
+** DONE nix flake init
 ** TODO create README.org
 ** GO related:
 *** TODO go mod init reponame

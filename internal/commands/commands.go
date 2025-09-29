@@ -6,7 +6,8 @@ import (
 	"os/exec"
 
 	"github.com/charmbracelet/huh"
-	"github.com/jblais493/go-repo/internal/devenv" // Add this import
+	"github.com/jblais493/go-repo/internal/devenv"
+	"github.com/jblais493/go-repo/internal/golang"
 )
 
 func CreateRepoInteractive() error {
@@ -62,8 +63,20 @@ func CreateRepoInteractive() error {
 		return fmt.Errorf("devenv setup failed: %w", err)
 	}
 
+	fmt.Println("Initializing Go project structure...")
+	modulePath := fmt.Sprintf("github.com/%s/%s", username, repoName)
+	if err := golang.InitGoProject(repoName, modulePath); err != nil {
+		return fmt.Errorf("Go project initialization failed: %w", err)
+	}
+
 	fmt.Println("Initializing secrets management...")
 	if err := secretsGen(repoName); err != nil {
+		// Non-fatal? Or fatal?
+		return fmt.Errorf("secrets initialization failed: %w", err)
+	}
+
+	fmt.Println("Initializing nix flake...")
+	if err := flakeInit(repoName); err != nil {
 		// Non-fatal? Or fatal?
 		return fmt.Errorf("secrets initialization failed: %w", err)
 	}
@@ -154,18 +167,17 @@ func validateRepoName(s string) error {
 	return nil
 }
 
-// TODO
-// func modInit(repoName string, username string) error {
-// 	data := []byte("Hello, Go file writing!\n")
-// 	err := os.WriteFile("go.mod", data, 0644) // 0644 sets file permissions
-// 	if err != nil {
-// 		fmt.Printf(err)
-// 	}
-// 	fmt.Printf("Data written to output.txt")
-// }
-
 func secretsGen(projectPath string) error {
 	cmd := exec.Command("nix", "run", "github:jblais493/go-secrets", "--", "generate")
+	cmd.Dir = projectPath // Run in the new repo
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd.Run()
+}
+
+func flakeInit(projectPath string) error {
+	cmd := exec.Command("nix", "flake", "init")
 	cmd.Dir = projectPath // Run in the new repo
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
