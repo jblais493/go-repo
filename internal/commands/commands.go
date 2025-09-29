@@ -78,6 +78,11 @@ func CreateRepoInteractive() error {
 		return fmt.Errorf("secrets initialization failed: %w", err)
 	}
 
+	fmt.Println("Creating first commit...")
+	if err := git.FirstCommit(repoName, username); err != nil {
+		return fmt.Errorf("local repository creation failed: %w", err)
+	}
+
 	fmt.Printf("✨ Repository '%s' created successfully!\n", repoName)
 	fmt.Printf("📁 Local: ./%s\n", repoName)
 	fmt.Printf("Secrets gerated at %s/secrets\n", repoName)

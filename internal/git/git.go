@@ -61,3 +61,39 @@ func AddRemoteOrigin(repoName string, username string) error {
 	fmt.Printf("Remote origin added: %s\n", repoURL)
 	return nil
 }
+
+func FirstCommit(repoName string, username string) error {
+	// Stage all files
+	cmdAdd := exec.Command("git", "add", ".")
+	cmdAdd.Dir = repoName
+	cmdAdd.Stdout = os.Stdout
+	cmdAdd.Stderr = os.Stderr
+
+	if err := cmdAdd.Run(); err != nil {
+		return fmt.Errorf("failed to stage files: %w", err)
+	}
+
+	// Create initial commit
+	cmdCommit := exec.Command("git", "commit", "-m", "Initial commit: project scaffolding")
+	cmdCommit.Dir = repoName
+	cmdCommit.Stdout = os.Stdout
+	cmdCommit.Stderr = os.Stderr
+
+	if err := cmdCommit.Run(); err != nil {
+		return fmt.Errorf("failed to create commit: %w", err)
+	}
+
+	// Push to remote
+	cmdPush := exec.Command("git", "push", "-u", "origin", "master")
+	cmdPush.Dir = repoName
+	cmdPush.Stdout = os.Stdout
+	cmdPush.Stderr = os.Stderr
+
+	if err := cmdPush.Run(); err != nil {
+		return fmt.Errorf("failed to push to remote: %w", err)
+	}
+
+	repoURL := fmt.Sprintf("https://github.com/%s/%s", username, repoName)
+	fmt.Printf("✅ First commit pushed to %s\n", repoURL)
+	return nil
+}
