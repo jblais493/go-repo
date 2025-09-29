@@ -40,6 +40,7 @@ in
   packages = [
     pkgs.air
     pkgs.age
+    pkgs.just
   ];
 
   # Add runtime scripts here:
@@ -74,11 +75,6 @@ func CreateDevenv(projectPath string) error {
 		return fmt.Errorf("failed to write devenv.nix: %w", err)
 	}
 
-	// Step 3: Create secrets directory structure
-	if err := createSecretsDirectory(projectPath); err != nil {
-		return fmt.Errorf("failed to create secrets directory: %w", err)
-	}
-
 	return nil
 }
 
@@ -95,23 +91,4 @@ func writeDevenvConfig(projectPath string) error {
 	devenvPath := filepath.Join(projectPath, "devenv.nix")
 
 	return os.WriteFile(devenvPath, []byte(devenvNixTemplate), 0644)
-}
-
-func createSecretsDirectory(projectPath string) error {
-	secretsDir := filepath.Join(projectPath, "secrets")
-
-	if err := os.MkdirAll(secretsDir, 0755); err != nil {
-		return err
-	}
-
-	// Create a .gitignore for the secrets directory
-	gitignoreContent := `# Age-encrypted secrets
-*.age
-
-# Example: uncomment when you add secrets
-# !example.age
-`
-
-	gitignorePath := filepath.Join(secretsDir, ".gitignore")
-	return os.WriteFile(gitignorePath, []byte(gitignoreContent), 0644)
 }

@@ -1,5 +1,3 @@
-// go-repo/internal/commands.go
-
 package commands
 
 import (
@@ -8,12 +6,13 @@ import (
 	"os/exec"
 
 	"github.com/charmbracelet/huh"
+	"github.com/jblais493/go-repo/internal/devenv" // Add this import
 )
 
 func CreateRepoInteractive() error {
 	var repoName string
 	var visibility string
-	var username string // Added missing variable declaration
+	var username string
 
 	form := huh.NewForm(
 		huh.NewGroup(
@@ -42,7 +41,7 @@ func CreateRepoInteractive() error {
 		return fmt.Errorf("form input failed: %w", err)
 	}
 
-	// Execute operations sequentially - only one return at the end
+	// Execute operations sequentially
 	fmt.Println("Creating local repository...")
 	if err := CreateRepo(repoName); err != nil {
 		return fmt.Errorf("local repository creation failed: %w", err)
@@ -58,9 +57,25 @@ func CreateRepoInteractive() error {
 		return fmt.Errorf("failed to add remote origin: %w", err)
 	}
 
+	fmt.Println("Setting up development environment with devenv...")
+	if err := devenv.CreateDevenv(repoName); err != nil {
+		return fmt.Errorf("devenv setup failed: %w", err)
+	}
+
+	fmt.Println("Initializing secrets management...")
+	if err := secretsGen(repoName); err != nil {
+		// Non-fatal? Or fatal?
+		return fmt.Errorf("secrets initialization failed: %w", err)
+	}
+
 	fmt.Printf("✨ Repository '%s' created successfully!\n", repoName)
 	fmt.Printf("📁 Local: ./%s\n", repoName)
+	fmt.Printf("Secrets gerated at %s/secrets\n", repoName)
 	fmt.Printf("🌐 Remote: https://github.com/%s/%s\n", username, repoName)
+	fmt.Printf("🛠️  Development environment configured with devenv\n")
+	fmt.Printf("\nNext steps:\n")
+	fmt.Printf("  cd %s\n", repoName)
+	fmt.Printf("  direnv allow\n")
 
 	return nil
 }
@@ -137,4 +152,23 @@ func validateRepoName(s string) error {
 		return fmt.Errorf("repository name too long")
 	}
 	return nil
+}
+
+// TODO
+// func modInit(repoName string, username string) error {
+// 	data := []byte("Hello, Go file writing!\n")
+// 	err := os.WriteFile("go.mod", data, 0644) // 0644 sets file permissions
+// 	if err != nil {
+// 		fmt.Printf(err)
+// 	}
+// 	fmt.Printf("Data written to output.txt")
+// }
+
+func secretsGen(projectPath string) error {
+	cmd := exec.Command("nix", "run", "github:jblais493/go-secrets", "--", "generate")
+	cmd.Dir = projectPath // Run in the new repo
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd.Run()
 }
