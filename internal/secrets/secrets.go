@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func secretsGen(projectPath string) error {
+func SecretsGen(projectPath string) error {
 	cmd := exec.Command("nix", "run", "github:jblais493/go-secrets", "--", "generate")
 	cmd.Dir = projectPath // Run in the new repo
 	cmd.Stdout = os.Stdout

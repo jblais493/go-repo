@@ -7,6 +7,7 @@ import (
 
 	"github.com/charmbracelet/huh"
 	"github.com/jblais493/go-repo/internal/devenv"
+	"github.com/jblais493/go-repo/internal/git"
 	"github.com/jblais493/go-repo/internal/golang"
 	"github.com/jblais493/go-repo/internal/secrets"
 )
@@ -43,19 +44,14 @@ func CreateRepoInteractive() error {
 		return fmt.Errorf("form input failed: %w", err)
 	}
 
-	// Execute operations sequentially
-	fmt.Println("Creating local repository...")
-	if err := CreateRepo(repoName); err != nil {
+	fmt.Println("Configuring Github repository...")
+	if err := git.CreateRepo(repoName); err != nil {
 		return fmt.Errorf("local repository creation failed: %w", err)
 	}
-
-	fmt.Println("Creating remote repository on GitHub...")
-	if err := CreateRemote(visibility, repoName); err != nil {
+	if err := git.CreateRemote(visibility, repoName); err != nil {
 		return fmt.Errorf("remote repository creation failed: %w", err)
 	}
-
-	fmt.Println("Linking local and remote repositories...")
-	if err := AddRemoteOrigin(repoName, username); err != nil {
+	if err := git.AddRemoteOrigin(repoName, username); err != nil {
 		return fmt.Errorf("failed to add remote origin: %w", err)
 	}
 
@@ -71,7 +67,7 @@ func CreateRepoInteractive() error {
 	}
 
 	fmt.Println("Initializing secrets management...")
-	if err := secrets.secretsGen(repoName); err != nil {
+	if err := secrets.SecretsGen(repoName); err != nil {
 		// Non-fatal? Or fatal?
 		return fmt.Errorf("secrets initialization failed: %w", err)
 	}
@@ -91,62 +87,6 @@ func CreateRepoInteractive() error {
 	fmt.Printf("  cd %s\n", repoName)
 	fmt.Printf("  direnv allow\n")
 
-	return nil
-}
-
-func CreateRepo(repoName string) error {
-	// Create directory with proper permissions
-	err := os.MkdirAll(repoName, 0755)
-	if err != nil {
-		return fmt.Errorf("failed to create directory %s: %w", repoName, err)
-	}
-
-	// Initialize git repository
-	cmd := exec.Command("git", "init")
-	cmd.Dir = repoName // Execute git init INSIDE the new directory
-	err = cmd.Run()
-	if err != nil {
-		// Cleanup on failure - atomic operation principle
-		os.RemoveAll(repoName)
-		return fmt.Errorf("failed to initialize git repo in %s: %w", repoName, err)
-	}
-
-	fmt.Printf("Repository '%s' created and initialized\n", repoName)
-	return nil
-}
-
-func CreateRemote(visibility string, repoName string) error {
-	// Build proper GitHub CLI command
-	var cmd *exec.Cmd
-
-	if visibility == "private" {
-		cmd = exec.Command("gh", "repo", "create", repoName, "--private")
-	} else {
-		cmd = exec.Command("gh", "repo", "create", repoName, "--public")
-	}
-
-	// Execute and capture output
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("failed to create remote repository: %w\nOutput: %s", err, output)
-	}
-
-	fmt.Printf("Remote repository '%s' created on GitHub (%s)\n", repoName, visibility)
-	return nil
-}
-
-func AddRemoteOrigin(repoName string, username string) error {
-	repoURL := fmt.Sprintf("git@github.com:%s/%s.git", username, repoName)
-
-	cmd := exec.Command("git", "remote", "add", "origin", repoURL)
-	cmd.Dir = repoName
-
-	err := cmd.Run()
-	if err != nil {
-		return fmt.Errorf("failed to add remote origin: %w", err)
-	}
-
-	fmt.Printf("Remote origin added: %s\n", repoURL)
 	return nil
 }
 
