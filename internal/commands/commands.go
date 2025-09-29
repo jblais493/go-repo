@@ -8,6 +8,7 @@ import (
 	"github.com/charmbracelet/huh"
 	"github.com/jblais493/go-repo/internal/devenv"
 	"github.com/jblais493/go-repo/internal/golang"
+	"github.com/jblais493/go-repo/internal/secrets"
 )
 
 func CreateRepoInteractive() error {
@@ -70,7 +71,7 @@ func CreateRepoInteractive() error {
 	}
 
 	fmt.Println("Initializing secrets management...")
-	if err := secretsGen(repoName); err != nil {
+	if err := secrets.secretsGen(repoName); err != nil {
 		// Non-fatal? Or fatal?
 		return fmt.Errorf("secrets initialization failed: %w", err)
 	}
@@ -165,15 +166,6 @@ func validateRepoName(s string) error {
 		return fmt.Errorf("repository name too long")
 	}
 	return nil
-}
-
-func secretsGen(projectPath string) error {
-	cmd := exec.Command("nix", "run", "github:jblais493/go-secrets", "--", "generate")
-	cmd.Dir = projectPath // Run in the new repo
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	return cmd.Run()
 }
 
 func flakeInit(projectPath string) error {
